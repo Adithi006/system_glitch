@@ -1,69 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>System Update</title>
+  <title>System Error</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       margin: 0;
       background: black;
-      color: #00ff00;
+      overflow: hidden;
       font-family: monospace;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    }
+    #screen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #00ff00;
       text-align: center;
     }
     .glitch {
-      animation: flicker 0.30s infinite alternate;
+      font-size: 2rem;
+      animation: shake 0.3s infinite alternate;
+      position: relative;
     }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0.8;
+    }
+    .glitch::before {
+      color: red;
+      left: -2px;
+      animation: tear 0.19s infinite alternate;
+    }
+    .glitch::after {
+      color: blue;
+      left: 2px;
+      animation: tear 0.26s infinite alternate;
+    }
+
+    @keyframes shake {
+      from { transform: translateX(-2px); }
+      to { transform: translateX(2px); }
+    }
+    @keyframes tear {
+      from { top: -1px; }
+      to { top: 1px; }
+    }
+
+    .warning {
+      color: red;
+      font-size: 1rem;
+      margin-top: 10px;
+      animation: flicker 0.5s infinite alternate;
+    }
+
     @keyframes flicker {
-      0% { opacity: 1; }
-      100% { opacity: 0.6; }
+      from { opacity: 1; }
+      to { opacity: 0.4; }
     }
-    .small {
-      font-size: 0.8rem;
-      opacity: 0.7;
+
+    #tearLine {
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      background: white;
+      top: 0;
+      animation: tearMove 1s infinite linear;
+      opacity: 0.3;
+    }
+
+    @keyframes tearMove {
+      from { top: 0; }
+      to { top: 100%; }
     }
   </style>
 </head>
 <body>
+  <div id="tearLine"></div>
   <div id="screen">
-    <h1 class="glitch">SYSTEM SYNCING…</h1>
-    <p class="small">Do not close this tab.</p>
+    <div class="glitch" id="text" data-text="INITIALIZING...">INITIALIZING...</div>
+    <div class="warning" id="warning">do not close this tab</div>
   </div>
 
-  <script>
-    history.pushState(null, "", location.href);
-    const trap = () => history.pushState(null, "", location.href);
-    window.addEventListener("popstate", trap);
+  <audio id="buzz" loop>
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-electronic-retro-glitch-2855.mp3" type="audio/mpeg">
+  </audio>
 
-    const messages = [
-      "Stimulating personal data extraction...",
-      "System not responding error 404...",
-      "Optimizing background tasks...",
-      "Applying system patches...",
-      "Almost done..."
+  <script>
+    const texts = [
+      "INITIALIZING",
+"SYSTEM UNRESPONSIVE...",
+      "MEMORY CORRUPTION DETECTED",
+      "UNSTABLE SIGNAL",
+      "STIMULATING DATA EXTRACTION",
+      "DATA LEAK POSSIBLE",
+      "FINALIZING..."
     ];
 
+    const warnings = [
+      "do not close this tab",
+      "system unstable",
+      "unexpected behavior detected",
+      "memory overflow",
+      "security alert"
+    ];
+
+    const textEl = document.getElementById("text");
+    const warnEl = document.getElementById("warning");
+    const audio = document.getElementById("buzz");
+
     let i = 0;
-    const screen = document.getElementById("screen");
+
+    setTimeout(() => audio.play().catch(() => {}), 1000);
 
     const interval = setInterval(() => {
-      if (i < messages.length) {
-        screen.innerHTML = `<h1 class="glitch">${messages[i]}</h1><p class="small">Please wait...</p>`;
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 1200);
+      const t = texts[i % texts.length];
+      textEl.textContent = t;
+      textEl.setAttribute("data-text", t);
+      warnEl.textContent = warnings[Math.floor(Math.random() * warnings.length)];
+      i++;
+    }, 900);
 
     setTimeout(() => {
-      window.removeEventListener("popstate", trap);
-      screen.innerHTML = "<h1>💀😭just kidding</h1><p>You it was a prank hehehe.</p>";
-    }, 15000);
+      clearInterval(interval);
+      audio.pause();
+      document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh;'>💀😭 it's a prank lmao</h1>";
+    }, 12000);
   </script>
 </body>
-
 </html>
