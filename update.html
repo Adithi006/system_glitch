@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>System Update</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .glitch {
+      animation: flicker 0.15s infinite alternate;
+    }
+    @keyframes flicker {
+      0% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    .small {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div id="screen">
+    <h1 class="glitch">SYSTEM SYNCING…</h1>
+    <p class="small">Do not close this tab.</p>
+  </div>
+
+  <script>
+    history.pushState(null, "", location.href);
+    const trap = () => history.pushState(null, "", location.href);
+    window.addEventListener("popstate", trap);
+
+    const messages = [
+      "Stimulating personal data extraction...",
+      "System not responding error 404...",
+      "Optimizing background tasks...",
+      "Applying system patches...",
+      "Almost done..."
+    ];
+
+    let i = 0;
+    const screen = document.getElementById("screen");
+
+    const interval = setInterval(() => {
+      if (i < messages.length) {
+        screen.innerHTML = `<h1 class="glitch">${messages[i]}</h1><p class="small">Please wait...</p>`;
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 1200);
+
+    setTimeout(() => {
+      window.removeEventListener("popstate", trap);
+      screen.innerHTML = "<h1>💀😭just kidding</h1><p>You it was a prank hehehe.</p>";
+    }, 7000);
+  </script>
+</body>
+</html>
