@@ -86,49 +86,55 @@
   </div>
 
   <audio id="buzz" loop>
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-electronic-retro-glitch-2855.mp3" type="audio/mpeg">
-  </audio>
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-electronic-retro-glitch-2855.mp3" type="audio/mpeg">
+</audio>
 
-  <script>
-    const texts = [
-      "INITIALIZING",
-"SYSTEM UNRESPONSIVE...",
-      "MEMORY CORRUPTION DETECTED",
-      "UNSTABLE SIGNAL",
-      "STIMULATING DATA EXTRACTION",
-      "DATA LEAK POSSIBLE",
-      "FINALIZING..."
-    ];
+<audio id="beep" loop>
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-retro-game-over-213.wav" type="audio/wav">
+</audio>
 
-    const warnings = [
-      "do not close this tab",
-      "system unstable",
-      "unexpected behavior detected",
-      "memory overflow",
-      "security alert"
-    ];
+<script>
+  const texts = [
+    "INITIALIZING...",
+    "SYSTEM UNRESPONSIVE",
+    "UNSTABLE SIGNAL",
+    "STIMULATING PERSONAL DATA EXTRACTION",
+    "DATA LEAK POSSIBLE",
+    "FINALIZING..."
+  ];
 
-    const textEl = document.getElementById("text");
-    const warnEl = document.getElementById("warning");
-    const audio = document.getElementById("buzz");
+  const warnings = [
+    "do not close this tab",
+    "system unstable",
+    "unexpected behavior detected",
+    "memory overflow",
+    "security alert"
+  ];
 
-    let i = 0;
+  const textEl = document.getElementById("text");
+  const warnEl = document.getElementById("warning");
+  const buzz = document.getElementById("buzz");
+  const beep = document.getElementById("beep");
 
-    setTimeout(() => audio.play().catch(() => {}), 1000);
+  let i = 0;
 
-    const interval = setInterval(() => {
-      const t = texts[i % texts.length];
-      textEl.textContent = t;
-      textEl.setAttribute("data-text", t);
-      warnEl.textContent = warnings[Math.floor(Math.random() * warnings.length)];
-      i++;
-    }, 900);
+  setTimeout(() => {
+    buzz.play().catch(()=>{});
+    beep.play().catch(()=>{});
+  }, 1000);
 
-    setTimeout(() => {
-      clearInterval(interval);
-      audio.pause();
-      document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh;'>💀😭 it's a prank lmao</h1>";
-    }, 12000);
-  </script>
-</body>
-</html>
+  const interval = setInterval(() => {
+    const t = texts[i % texts.length];
+    textEl.textContent = t;
+    textEl.setAttribute("data-text", t);
+    warnEl.textContent = warnings[Math.floor(Math.random() * warnings.length)];
+    i++;
+  }, 900);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    buzz.pause();
+    beep.pause();
+    document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh;'>💀😭It was a prank</h1>";
+  }, 10000);
+</script>
