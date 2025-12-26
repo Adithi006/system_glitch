@@ -113,15 +113,28 @@
 
   const textEl = document.getElementById("text");
   const warnEl = document.getElementById("warning");
-  const buzz = document.getElementById("buzz");
-  const beep = document.getElementById("beep");
 
   let i = 0;
+  let audioCtx;
+  let beepInterval;
 
-  setTimeout(() => {
-    buzz.play().catch(()=>{});
-    beep.play().catch(()=>{});
-  }, 1000);
+  function startBeep() {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    beepInterval = setInterval(() => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "square";
+      osc.frequency.value = 900;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      setTimeout(() => osc.stop(), 100);
+    }, 500);
+  }
+
+  document.body.addEventListener("click", () => {
+    if (!audioCtx) startBeep();
+  }, { once: true });
 
   const interval = setInterval(() => {
     const t = texts[i % texts.length];
@@ -133,8 +146,8 @@
 
   setTimeout(() => {
     clearInterval(interval);
-    buzz.pause();
-    beep.pause();
-    document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh;'>💀😭It was a prank</h1>";
+    clearInterval(beepInterval);
+    if (audioCtx) audioCtx.close();
+    document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh;'>💀😭 It's a prank hehehe</h1>";
   }, 10000);
 </script>
