@@ -20,7 +20,7 @@
     }
     .glitch {
       font-size: 2rem;
-      animation: shake 0.3s infinite alternate;
+      animation: shake 0.5s infinite alternate;
       position: relative;
     }
     .glitch::before, .glitch::after {
@@ -33,7 +33,7 @@
     .glitch::before {
       color: red;
       left: -2px;
-      animation: tear 0.19s infinite alternate;
+      animation: tear 0.29s infinite alternate;
     }
     .glitch::after {
       color: blue;
@@ -54,7 +54,7 @@
       color: red;
       font-size: 1rem;
       margin-top: 10px;
-      animation: flicker 0.5s infinite alternate;
+      animation: flicker 0.9s infinite alternate;
     }
 
     @keyframes flicker {
@@ -149,5 +149,6 @@
     clearInterval(beepInterval);
     if (audioCtx) audioCtx.close();
     document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:40vh;'>💀😭 It's a prank hehehe</h1>";
-  }, 10000);
+  }, 15000);
 </script>
+
